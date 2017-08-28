@@ -5,7 +5,7 @@ interface Navigator {
 
 interface PhonebookContacts {
     /**
-     * The navigator.Echo.myPluginMethod method executes asynchronously
+     * The navigator.PhonebookContacts.contacts method executes asynchronously
      * @param onSuccess Success callback function
      * @param onError Error callback function
      */

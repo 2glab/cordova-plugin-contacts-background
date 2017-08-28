@@ -13,8 +13,8 @@ var PhonebookContacts = {
      * @return array of Contacts
      */
     contacts:function(successCB, errorCB) {
-        argscheck.checkArgs('fF', 'Echo.myPluginMethod', arguments);
-        exec(successCB, errorCB, "Echo", "myPluginMethod", []);
+        argscheck.checkArgs('fF', 'PhonebookContacts.contacts', arguments);
+        exec(successCB, errorCB, "PhonebookContacts", "contacts", []);
     }
 };
 
