@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.2glab.cordova.contacts"
+    version="0.0.1">
+
+  <name>PhonebookContacts</name>
+  <description>Fetch contacts</description>
+  <license>Apache 2.0</license>
+  <keywords>contacts</keywords>
+  <issue>https://github.com/2glab/cordova-plugin-contacts-background/issues</issue>
+
+  <platform name="ios">
+      <config-file target="config.xml" parent="/*">
+          <feature name="PhonebookContacts">
+              <param name="ios-package" value="PhonebookContacts" />
+          </feature>
+      </config-file>
+
+      <js-module src="www/PhonebookContacts.js" name="PhonebookContacts">
+          <clobbers target="navigator.phonebookContacts" />
+      </js-module>
+
+      <header-file src="src/ios/PhonebookContacts.h" />
+      <source-file src="src/ios/PhonebookContacts.m" />
+
+  </platform>
+</plugin>

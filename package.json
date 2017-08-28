@@ -1,0 +1,25 @@
+{
+  "name": "Echo",
+  "version": "0.0.1",
+  "description": "Example of broken cordova plugin threading in ios 11",
+  "cordova": {
+    "id": "com.2glab.cordova.contacts",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaliko/cordova-plugin-threading.git"
+  },
+  "keywords": [
+    "ios 11",
+    "threading"
+  ],
+  "author": "Shalva Usubov",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/shaliko/cordova-plugin-threading/issues"
+  },
+  "homepage": "https://github.com/shaliko/cordova-plugin-threading#readme"
+}
