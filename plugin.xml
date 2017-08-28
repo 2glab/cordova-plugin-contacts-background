@@ -19,7 +19,7 @@
       </config-file>
 
       <js-module src="www/PhonebookContacts.js" name="PhonebookContacts">
-          <clobbers target="navigator.phonebookContacts" />
+          <clobbers target="navigator.PhonebookContacts" />
       </js-module>
 
       <header-file src="src/ios/PhonebookContacts.h" />
