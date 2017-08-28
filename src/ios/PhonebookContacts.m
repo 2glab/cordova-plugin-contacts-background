@@ -22,7 +22,9 @@
 {
     // Check command.arguments here.
     [self.commandDelegate runInBackground:^{
-        __block NSString* payload = nil;
+//        __block NSString* payload = nil;
+        __block NSMutableArray* payload = [[NSMutableArray alloc] init];
+
         // Some blocking logic...
 //        for (int i = 1; i <= 100000000; i++)
 //        {
@@ -41,25 +43,27 @@
                 CNContactStore * contactStore = [[CNContactStore alloc] init];
                 [contactStore requestAccessForEntityType:entityType completionHandler:^(BOOL granted, NSError * _Nullable error) {
                     if(granted){
-                        [self getAllContact];
+                        payload = [self getAllContact];
                     }
                 }];
             }
             else if( [CNContactStore authorizationStatusForEntityType:entityType]== CNAuthorizationStatusAuthorized)
             {
-                [self getAllContact];
+                payload = [self getAllContact];
             }
         }
         /////////////
 
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:payload];
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:payload];
         // The sendPluginResult method is thread-safe.
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
--(void)getAllContact
+-(NSMutableArray *)getAllContact
 {
+    NSMutableArray * allContacts = [[NSMutableArray alloc]init];
+
     if([CNContactStore class])
     {
         //iOS 9 or later
@@ -68,21 +72,38 @@
         [addressBook containersMatchingPredicate:[CNContainer predicateForContainersWithIdentifiers: @[addressBook.defaultContainerIdentifier]] error:&contactError];
         NSArray * keysToFetch =@[CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPostalAddressesKey];
         CNContactFetchRequest * request = [[CNContactFetchRequest alloc]initWithKeysToFetch:keysToFetch];
-        BOOL success = [addressBook enumerateContactsWithFetchRequest:request error:&contactError usingBlock:^(CNContact * __nonnull contact, BOOL * __nonnull stop){
-            [self parseContactWithContact:contact];
+        BOOL success = [addressBook enumerateContactsWithFetchRequest:request error:&contactError usingBlock:^(CNContact * __nonnull contact, BOOL * __nonnull stop) {
+            NSLog(@" phone => %@", [self parseContactWithContact:contact]);
+            [allContacts addObject:[self parseContactWithContact:contact]];
         }];
     }
+
+    return allContacts;
 }
 
-- (void)parseContactWithContact :(CNContact* )contact
+- (NSMutableDictionary *)parseContactWithContact :(CNContact* )contact
 {
+
+    NSMutableDictionary* newContact = [NSMutableDictionary dictionaryWithCapacity:1];
+
     NSString * firstName =  contact.givenName;
     NSString * lastName =  contact.familyName;
     NSString * phone = [[contact.phoneNumbers valueForKey:@"value"] valueForKey:@"digits"];
     NSString * email = [contact.emailAddresses valueForKey:@"value"];
     NSArray * addrArr = [self parseAddressWithContac:contact];
 
-    NSLog(@" phone => %@", phone);
+            for (int i = 1; i <= 10000; i++)
+            {
+                int r = arc4random_uniform(i);
+//                if(i % 50000000 == 0) {
+//                    NSLog(@"%d", i);
+//                }
+            }
+
+
+    [newContact setObject: phone forKey:@"phone"];
+
+    return newContact;
 }
 
 - (NSMutableArray *)parseAddressWithContac: (CNContact *)contact
