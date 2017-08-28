@@ -73,7 +73,6 @@
         NSArray * keysToFetch =@[CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPostalAddressesKey];
         CNContactFetchRequest * request = [[CNContactFetchRequest alloc]initWithKeysToFetch:keysToFetch];
         BOOL success = [addressBook enumerateContactsWithFetchRequest:request error:&contactError usingBlock:^(CNContact * __nonnull contact, BOOL * __nonnull stop) {
-            NSLog(@" phone => %@", [self parseContactWithContact:contact]);
             [allContacts addObject:[self parseContactWithContact:contact]];
         }];
     }
@@ -88,22 +87,37 @@
 
     NSString * firstName =  contact.givenName;
     NSString * lastName =  contact.familyName;
-    NSString * phone = [[contact.phoneNumbers valueForKey:@"value"] valueForKey:@"digits"];
+//    NSString * phone = [[contact.phoneNumbers valueForKey:@"value"] valueForKey:@"digits"];
     NSString * email = [contact.emailAddresses valueForKey:@"value"];
     NSArray * addrArr = [self parseAddressWithContac:contact];
-
-            for (int i = 1; i <= 10000; i++)
-            {
-                int r = arc4random_uniform(i);
-//                if(i % 50000000 == 0) {
-//                    NSLog(@"%d", i);
-//                }
-            }
+//
+//            for (int i = 1; i <= 100000; i++)
+//            {
+//                int r = arc4random_uniform(i);
+//            }
 
 
-    [newContact setObject: phone forKey:@"phone"];
+    NSArray * phoneNumbers = [self parsePhoneWithContac:contact];
+
+    [newContact setObject: phoneNumbers forKey:@"phone"];
 
     return newContact;
+}
+
+- (NSMutableArray *)parsePhoneWithContac: (CNContact *)contact
+{
+    NSMutableArray * items = [[NSMutableArray alloc]init];
+
+    NSLog(@"%@", contact.phoneNumbers);
+
+//    CNPostalAddressFormatter * formatter = [[CNPostalAddressFormatter alloc]init];
+//    NSArray * addresses = (NSArray*)[contact.postalAddresses valueForKey:@"value"];
+//    if (addresses.count > 0) {
+//        for (CNPostalAddress* address in addresses) {
+//            [items addObject:[formatter stringFromPostalAddress:address]];
+//        }
+//    }
+    return items;
 }
 
 - (NSMutableArray *)parseAddressWithContac: (CNContact *)contact
